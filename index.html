@@ -1,0 +1,164 @@
+<!doctype>
+<html>
+<head>
+<script type='text/javascript'>
+
+function get1() {
+	var param1 = document.getElementById('query1').value;
+	var res1 = contracts['Sample'].contract.get1();
+	document.getElementById('queryres1').innerText = res1;
+}
+function get2(){
+	var param2 = document.getElementById('query2').value;
+	var res2 = contracts['Sample'].contract.get2();
+	document.getElementById('queryres2').innerText = res2;
+}
+function set1() {
+	var key1 = document.getElementById('key1').value;
+	var res1 = contracts['Sample'].contract.set1(key1);
+}
+function set2() {
+	var key2 = document.getElementById('key2').value;
+	var res2 = contracts['Sample'].contract.set2(key2);
+}
+function add(){
+	var ans = contracts['Sample'].contract.add();
+	document.getElementById('add_ans').innerText = ans;
+	
+}
+/*
+function isPrime(value) //tests if an integer is a prime number
+{
+    //through the for loop, will try and divide the value by all odd numbers from 3 to the sqrt of the value
+    //if it at any time returns zero for a remainder, then we know it is not a prime number.
+    for(var i = 3; i < Math.sqrt(value); i+=2) 
+    {
+        if(value % i === 0) 
+        {
+            return false;
+        }
+    }
+    if(value === 2)
+        {
+            return true; //Two is a prime number
+        }
+    if(value % 2 === 0)
+        {
+            return false; //Even numbers that are not 2 that are not divisible by an odd number are all composite
+        }
+    return value > 1; //Everything else that is greater than 1 is prime
+}
+
+function randomPrime(buffer)//return a random large prime number given an ArrayBuffer variable 'var buffer = new ArrayBuffer(4)'
+{
+    var randomLargeInt = new Uint32Array(buffer); //Create a new unsigned 32bit integer array using the ArrayBuffer
+    window.crypto.getRandomValues(randomLargeInt); //randomly creates a crypto strength integer into our variable
+    var randomLargeOddInt = randomLargeInt[0]*2-1 //forces our random Int to be odd
+    if (isPrime( (randomLargeOddInt) ) )//tests to see if our new randomly created integer is a prime number
+    {
+        return ( (randomLargeOddInt) );//if true: then return that integer
+    }
+    else
+        {
+            return randomPrime(buffer); //else: then rerun function randomPrime(buffer) and return it's result
+        }
+    
+}
+
+var buffer = new ArrayBuffer(32); //create a buffer
+alert( randomPrime(buffer) ); //throw up a pop up of the newly generated random prime number
+*/
+function randomNumber(){
+	//var createRandom=Math.floor((Math.random() * 1000000) + 1);
+	//console.log('createRandom : '+createRandom);
+	//console.log('createRandom : '+num);
+	var r = contracts['Sample'].contract.randomNumber();
+	document.getElementById('random_ans').innerText = r;
+	
+}
+function compute_average(){
+	var tmp=contracts['Sample'].contract.average();
+	document.getElementById('avg_ans').innerText = tmp;
+	console.log('Contract mined! address: ' + contracts.address + ' transactionHash: ' + contracts.transactionHash);
+}
+function Compute_Hash(){
+	//var hash=contracts['Sample'].contract.Hash("1232323525");
+	console.log('hash');
+	document.getElementById('hash_ans').innerText = hash;
+}
+function encrypt(checkbit){
+	var m;
+	var tmp;
+	if(checkbit==1){
+		m=contracts['Sample'].contract.get1();
+		tmp=contracts['Sample'].contract.encrypt(m);
+		contracts['Sample'].contract.setC1(tmp);
+		document.getElementById('encrypt_ans1').innerText = tmp;
+	}
+	else{
+		m=contracts['Sample'].contract.get2();
+		tmp=contracts['Sample'].contract.encrypt(m);
+		contracts['Sample'].contract.setC2(tmp);
+		document.getElementById('encrypt_ans2').innerText = tmp;
+	}
+	//var plain=contracts['Sample'].contract.get1();	
+}
+function decrypt(){
+	var tmp=contracts['Sample'].contract.decrypt();
+	document.getElementById('decrypt_ans').innerText = tmp;
+}
+function cipherTextOperation(){
+    //var c1=document.getElementById('encrypt_ans1').value;
+	//var c2=document.getElementById('encrypt_ans2').value;
+	var c1=contracts['Sample'].contract.getC1();
+	var c2=contracts['Sample'].contract.getC2();
+	var c3=contracts['Sample'].contract.cipherTextOperation(c1,c2);
+	contracts['Sample'].contract.setC3(c3);
+	document.getElementById('cipher_operation_ans').innerText = c3;
+}
+function generate_prime(){
+	
+}
+
+</script>
+</head>
+<body bgcolor='#E6E6FA'>
+	<h5>Statisical Computation on blockchain</h5>
+<div>
+Store:
+	<input type='number' id='key1'>
+	<button onclick='set1()'>Save</button>
+	
+	<input value='encrypt1' type='button' id='encrypt1' onclick='encrypt(1)' />
+	<div id='encrypt_ans1'></div>
+	
+	<input type='number' id='key2'>
+	<button onclick='set2()'>Save</button>
+	
+	<input value='encrypt2' type='button' id='encrypt2' onclick='encrypt(2)' />
+	<div id='encrypt_ans2'></div>
+</div>
+<div>
+Query:
+	<div></div>
+	<input value='get' type='button' id='query1' onclick='get1()' />
+	<div id='queryres1'></div>
+	<input value='get' type='button' id='query2' onclick='get2()' />
+	<div id='queryres2'></div>
+	<input value='add' type='button' id='add' onclick='add()' />
+	<div id='add_ans'></div>
+	<input value='avg' type='button' id='avg' onclick='compute_average()' />
+	<div id='avg_ans'></div>
+	
+	
+	
+	<input value='CipherOperation' type='button' id='cipher_operation' onclick='cipherTextOperation()' />
+	<div id='cipher_operation_ans'></div>
+	
+	<input value='decrypt' type='button' id='decrypt' onclick='decrypt()' />
+	<div id='decrypt_ans'></div>
+	<input value='random' type='button' id='random' onclick='randomNumber()' />
+	<div id='random_ans'></div>
+</div>
+</body>
+</html>
